@@ -25,19 +25,19 @@ function Login() {
       [e.target.name]: e.target.value,
     }));
 
-    if (e.target.name === "email") {
-      setErrorState((prev) => ({ ...prev, emailError: "" }));
-    }
+    // if (e.target.name === "email") {
+    //   setErrorState((prev) => ({ ...prev, emailError: "" }));
+    // }
 
-    if (e.target.name === "password") {
-      setErrorState((prev) => ({ ...prev, passwordError: "" }));
-    }
+    // if (e.target.name === "password") {
+    //   setErrorState((prev) => ({ ...prev, passwordError: "" }));
+    // }
   };
 
-  const submitHandle = (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
 
-    if (!email) {
+    if (!email && email.length < 1) {
       setErrorState((prev) => ({
         ...prev,
         emailError: "cannot be empty",
@@ -49,7 +49,7 @@ function Login() {
       }));
     }
 
-    if (!password) {
+    if (!password && password.length < 1) {
       setErrorState((prev) => ({
         ...prev,
         passwordError: "cannot be empty",
@@ -61,7 +61,21 @@ function Login() {
       }));
     }
 
-    console.log(formState);
+    if (email) {
+      const emailValidation = validateEmail(email);
+
+      if (!emailValidation) {
+        setErrorState((prev) => ({
+          ...prev,
+          emailError: "is Invalid",
+        }));
+      }
+    }
+  };
+
+  const validateEmail = (emailText) => {
+    const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return pattern.test(emailText);
   };
 
   return (
@@ -80,7 +94,7 @@ function Login() {
           </p>
         </div>
         <div>
-          <form onSubmit={submitHandle}>
+          <form onSubmit={submitHandler}>
             <div className="mb-[1rem] md:mb-[.75rem]">
               <label className="block">
                 {emailError ? (
@@ -116,7 +130,7 @@ function Login() {
             <div className="mb-[1rem] md:mb-[1.25rem]">
               <label className="block">
                 {passwordError ? (
-                  <p className="text-Red">Password {emailError}</p>
+                  <p className="text-Red">Password {passwordError}</p>
                 ) : (
                   "Password"
                 )}
@@ -182,7 +196,7 @@ Login.getLayout = function getLayout(page) {
       <div className="w-full min-h-screen md:h-screen bg-SecondaryWhite">
         <div className="w-full min-h-screen md:h-full container mx-auto flex items-center">
           <div className="w-full flex flex-col justify-center itmes-center">
-            <div className="w-[90%] md:w-[50%] lg:w-[40%] mx-auto mb-[2rem] md:mb-[2.5rem]">
+            <div className="w-[90%] md:w-[50%] lg:w-[40%] mx-auto mb-[2rem] md:mb-[1.8rem]">
               <Image
                 src="/assets/images/logo-devlinks-large.svg"
                 width={182}
