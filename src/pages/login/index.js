@@ -26,52 +26,10 @@ function Login() {
       [e.target.name]: e.target.value,
     }));
 
-    // if (e.target.name === "email") {
-    //   setErrorState((prev) => ({ ...prev, emailError: "" }));
-    // }
-
-    // if (e.target.name === "password") {
-    //   setErrorState((prev) => ({ ...prev, passwordError: "" }));
-    // }
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
-    // if (!email && email.length < 1) {
-    //   setErrorState((prev) => ({
-    //     ...prev,
-    //     emailError: "cannot be empty",
-    //   }));
-    // } else {
-    //   setErrorState((prev) => ({
-    //     ...prev,
-    //     emailError: "",
-    //   }));
-    // }
-
-    // if (!password && password.length < 1) {
-    //   setErrorState((prev) => ({
-    //     ...prev,
-    //     passwordError: "cannot be empty",
-    //   }));
-    // } else {
-    //   setErrorState((prev) => ({
-    //     ...prev,
-    //     passwordError: "",
-    //   }));
-    // }
-
-    // if (email) {
-    //   const emailValidation = validateEmail(email);
-
-    //   if (!emailValidation) {
-    //     setErrorState((prev) => ({
-    //       ...prev,
-    //       emailError: "is Invalid",
-    //     }));
-    //   }
-    // }
 
     if (!inputValidation()) {
       return;

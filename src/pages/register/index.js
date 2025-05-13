@@ -30,15 +30,6 @@ function Register() {
       ...prev,
       [e.target.name]: e.target.value,
     }));
-    // if (e.target.name === "email") {
-    //   setErrorState((prev) => ({ ...prev, emailError: "" }));
-    // }
-    // if (e.target.name === "password") {
-    //   setErrorState((prev) => ({ ...prev, passwordError: "" }));
-    // }
-    // if (e.target.name === "confirmPassword") {
-    //   setErrorState((prev) => ({ ...prev, confirmPasswordError: "" }));
-    // }
   };
 
   const submitHandler = async (e) => {
