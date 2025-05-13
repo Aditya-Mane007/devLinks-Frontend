@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import SEO from "@/components/SEO";
+import toast from "react-hot-toast";
 
 function Login() {
   const [formState, setFormState] = useState({
@@ -34,43 +35,129 @@ function Login() {
     // }
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
-    if (!email && email.length < 1) {
+    // if (!email && email.length < 1) {
+    //   setErrorState((prev) => ({
+    //     ...prev,
+    //     emailError: "cannot be empty",
+    //   }));
+    // } else {
+    //   setErrorState((prev) => ({
+    //     ...prev,
+    //     emailError: "",
+    //   }));
+    // }
+
+    // if (!password && password.length < 1) {
+    //   setErrorState((prev) => ({
+    //     ...prev,
+    //     passwordError: "cannot be empty",
+    //   }));
+    // } else {
+    //   setErrorState((prev) => ({
+    //     ...prev,
+    //     passwordError: "",
+    //   }));
+    // }
+
+    // if (email) {
+    //   const emailValidation = validateEmail(email);
+
+    //   if (!emailValidation) {
+    //     setErrorState((prev) => ({
+    //       ...prev,
+    //       emailError: "is Invalid",
+    //     }));
+    //   }
+    // }
+
+    if (!inputValidation()) {
+      return;
+    }
+
+    const formData = {
+      email: email,
+      password: password,
+    };
+
+    try {
+      const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/auth/login", {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message, {
+          duration: 1500,
+        });
+        return;
+      }
+
+      toast.success(data.message, {
+        duration: 1500,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const inputValidation = () => {
+    let isValid;
+
+    if (!email) {
       setErrorState((prev) => ({
         ...prev,
-        emailError: "cannot be empty",
+        emailError: "Cannot be empty",
       }));
+      isValid = false;
     } else {
       setErrorState((prev) => ({
         ...prev,
         emailError: "",
       }));
+      isValid = true;
     }
 
-    if (!password && password.length < 1) {
+    if (!password) {
       setErrorState((prev) => ({
         ...prev,
-        passwordError: "cannot be empty",
+        passwordError: "Cannot be empty",
       }));
+      isValid = false;
     } else {
       setErrorState((prev) => ({
         ...prev,
         passwordError: "",
       }));
+      isValid = true;
     }
 
-    if (email) {
-      const emailValidation = validateEmail(email);
+    if (email !== "") {
+      const emailCValidation = validateEmail(email);
 
-      if (!emailValidation) {
+      if (!emailCValidation) {
         setErrorState((prev) => ({
           ...prev,
-          emailError: "is Invalid",
+          emailError: "is invalid",
         }));
+        isValid = false;
+      } else {
+        setErrorState((prev) => ({
+          ...prev,
+          emailError: "",
+        }));
+        isValid = true;
       }
     }
+
+    return isValid;
   };
 
   const validateEmail = (emailText) => {

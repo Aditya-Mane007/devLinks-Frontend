@@ -6,7 +6,6 @@ export default function Document() {
     <Html lang="en">
       <Head />
       <body className="antialiased">
-        <Toaster position="top-center" />
         <Main />
         <NextScript />
       </body>

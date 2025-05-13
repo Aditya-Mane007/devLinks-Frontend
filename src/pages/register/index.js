@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaArrowLeft, FaEye, FaEyeSlash } from "react-icons/fa6";
@@ -44,16 +44,58 @@ function Register() {
   const submitHandler = async (e) => {
     e.preventDefault();
 
+    if (!inputValdation()) {
+      return;
+    }
+
+    const formData = {
+      email: email,
+      password: password,
+    };
+
+    try {
+      const res = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + "/auth/register",
+        {
+          method: "POST",
+          body: JSON.stringify(formData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message, {
+          duration: 1500,
+        });
+        return;
+      }
+
+      toast.success(data.message, {
+        duration: 1500,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const inputValdation = () => {
+    let isValid;
     if (!email) {
       setErrorState((prev) => ({
         ...prev,
         emailError: "cannot be empty",
       }));
+      isValid = false;
     } else {
       setErrorState((prev) => ({
         ...prev,
         emailError: "",
       }));
+      isValid = true;
     }
 
     if (!password) {
@@ -61,11 +103,13 @@ function Register() {
         ...prev,
         passwordError: "cannot be empty",
       }));
+      isValid = false;
     } else {
       setErrorState((prev) => ({
         ...prev,
         passwordError: "",
       }));
+      isValid = true;
     }
 
     if (!confirmPassword) {
@@ -73,35 +117,13 @@ function Register() {
         ...prev,
         confirmPasswordError: "cannot be empty",
       }));
+      isValid = false;
     } else {
       setErrorState((prev) => ({
         ...prev,
         confirmPasswordError: "",
       }));
-    }
-
-    if (!email && email.length < 1) {
-      setErrorState((prev) => ({
-        ...prev,
-        emailError: "cannot be empty",
-      }));
-    } else {
-      setErrorState((prev) => ({
-        ...prev,
-        emailError: "",
-      }));
-    }
-
-    if (!password && password.length < 1) {
-      setErrorState((prev) => ({
-        ...prev,
-        passwordError: "cannot be empty",
-      }));
-    } else {
-      setErrorState((prev) => ({
-        ...prev,
-        passwordError: "",
-      }));
+      isValid = true;
     }
 
     if (password !== "" && password.length < 8) {
@@ -109,6 +131,7 @@ function Register() {
         ...prev,
         passwordError: "must contain at least 8 characters",
       }));
+      isValid = false;
     }
 
     if (
@@ -120,6 +143,7 @@ function Register() {
         ...prev,
         confirmPasswordError: "Password does not match",
       }));
+      isValid = false;
     }
 
     if (email) {
@@ -130,53 +154,12 @@ function Register() {
           ...prev,
           emailError: "is Invalid",
         }));
-        return;
+
+        isValid = false;
       }
     }
 
-    if (
-      email &&
-      emailError == "" &&
-      password &&
-      passwordError == "" &&
-      confirmPassword &&
-      confirmPasswordError == ""
-    ) {
-      const formData = {
-        email: email,
-        password: password,
-      };
-
-      console.log("Form Data :", formData);
-
-      try {
-        // const res = await axios.post(
-        //   process.env.NEXT_PUBLIC_API_URL + "/auth/register",
-        //   formData
-        // );
-        const res = await fetch(
-          process.env.NEXT_PUBLIC_API_URL + "/auth/register",
-          {
-            method: "POST",
-            body: JSON.stringify(formData),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        // const data = await res.data;
-        const data = await res.json();
-
-        if (!res.ok) {
-          toast.error(data.message, {
-            duration: 1500,
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    return isValid;
   };
 
   const validateEmail = (emailText) => {
