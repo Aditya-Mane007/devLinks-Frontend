@@ -4,8 +4,11 @@ import Link from "next/link";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import SEO from "@/components/SEO";
 import toast from "react-hot-toast";
+import { redirect } from "next/navigation";
+import { useRouter } from "next/router";
 
 function Login() {
+  const router = useRouter();
   const [formState, setFormState] = useState({
     email: "",
     password: "",
@@ -25,7 +28,6 @@ function Login() {
       ...prev,
       [e.target.name]: e.target.value,
     }));
-
   };
 
   const submitHandler = async (e) => {
@@ -44,6 +46,7 @@ function Login() {
       const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/auth/login", {
         method: "POST",
         body: JSON.stringify(formData),
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -58,8 +61,14 @@ function Login() {
         return;
       }
 
+      if (data) {
+        setTimeout(() => {
+          router.push("/");
+        }, 1000);
+      }
+
       toast.success(data.message, {
-        duration: 1500,
+        duration: 1000,
       });
     } catch (error) {
       console.log(error);

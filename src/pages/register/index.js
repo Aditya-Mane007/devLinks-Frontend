@@ -6,8 +6,10 @@ import { FaArrowRight } from "react-icons/fa";
 import SEO from "@/components/SEO";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 function Register() {
+  const router = useRouter();
   const [formState, setFormState] = useState({
     email: "",
     password: "",
@@ -50,6 +52,7 @@ function Register() {
         {
           method: "POST",
           body: JSON.stringify(formData),
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
@@ -65,8 +68,12 @@ function Register() {
         return;
       }
 
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
+
       toast.success(data.message, {
-        duration: 1500,
+        duration: 1000,
       });
     } catch (error) {
       console.log(error);
