@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SEO from "@/components/SEO";
 import Image from "next/image";
 import { BiDotsVerticalRounded } from "react-icons/bi";
@@ -6,61 +6,77 @@ import { FaEye, FaRegEye } from "react-icons/fa6";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
+import { createPortal } from "react-dom";
+import Modal from "../Modal/Modal";
+import Select from "../Select/Select";
 
 function Links() {
   const [Links, setLinks] = useState([
     {
       title: "Youtube",
       url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
+      visible: false,
     },
     {
       title: "Youtube",
       url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
+      visible: true,
     },
     {
       title: "Youtube",
       url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
+      visible: false,
     },
     {
       title: "Youtube",
       url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
+      visible: true,
     },
     {
       title: "Youtube",
       url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
+      visible: true,
     },
     {
       title: "Youtube",
       url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
+      visible: true,
     },
     {
       title: "Youtube",
       url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
+      visible: true,
     },
     {
       title: "Youtube",
       url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
+      visible: true,
     },
     {
       title: "Youtube",
       url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
+      visible: true,
     },
     {
       title: "Youtube",
       url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
+      visible: true,
     },
   ]);
 
-  const [optionId, setOptionId] = useState(null);
+  const [checkbox, setCheckbox] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  console.log(optionId);
   return (
     <>
       <SEO
         title="Customize your links | devLinks"
         description="Add/edit/remove links below and then share all your profiles with the world!"
       />
-      <div className="w-full h-full flex justify-between">
+      <div
+        className="w-full h-full flex justify-between"
+        aria-hidden={isModalOpen}
+      >
         <div className="hidden lg:flex w-[33%] h-full justify-center items-center bg-PrimaryWhite rounded-[.5rem] py-12 h-[85vh]s">
           <div>
             <Image
@@ -73,20 +89,23 @@ function Links() {
           </div>
         </div>
         <div className="w-full lg:w-[65%] p-[1.5rem] bg-PrimaryWhite flex flex-col h-[85vh] rounded-[.5rem]">
-          <>
-            <h1 className="text-[2rem] font-instrumentBold p-0 lg:leading-none">
-              Customize your links
-            </h1>
-            <p className="text-PrimaryGray leading-normal lg:leading-10">
-              Add/edit/remove links below and then share all your profiles with
-              the world!
-            </p>
-            <div className="flex items-center">
-              <button className="w-full py-2 my-4 rounded-[.5rem] border border-PrimaryPurple text-PrimaryPurple hover:bg-LightPurple font-semibold">
-                + Add new link
-              </button>
-            </div>
-          </>
+          <h1 className="text-[2rem] font-instrumentBold p-0 lg:leading-none">
+            Customize your links
+          </h1>
+          <p className="text-PrimaryGray leading-normal lg:leading-10">
+            Add/edit/remove links below and then share all your profiles with
+            the world!
+          </p>
+
+          <div className="flex items-center">
+            <button
+              className="w-full py-2 my-4 rounded-[.5rem] border border-PrimaryPurple text-PrimaryPurple hover:bg-LightPurple font-semibold"
+              onClick={() => setIsModalOpen((prev) => !prev)}
+            >
+              + Add new link
+            </button>
+          </div>
+
           {Links && Links.length < 1 ? (
             <div className="flex-1 flex justify-start items-center h-full">
               <div className="flex flex-col justify-center items-center">
@@ -110,12 +129,13 @@ function Links() {
               {Links &&
                 Links.map((link, index) => (
                   <div
+                    key={index}
                     className={`p-4 pb-[.5rem] rounded-[0.6rem] bg-SecondaryWhite relative ${
                       Links.length !== index + 1 ? "mb-4" : "mb-0"
                     } `}
                   >
                     <div className="flex justify-between items-center">
-                      <div className="flex mb-2">
+                      <div className="flex">
                         <Image
                           src="/assets/images/icon-drag-and-drop.svg"
                           width={15}
@@ -126,7 +146,43 @@ function Links() {
                         <p>Link #{index + 1}</p>
                       </div>
 
-                      {optionId == index + 1 ? (
+                      <div className="flex items-center cursor-pointer">
+                        <div className="mr-2">
+                          <label htmlFor="checkbox" className="flex">
+                            <input
+                              type="checkbox"
+                              name="checkbox"
+                              id="checkbox"
+                              className="w-0 h-0 "
+                              value={link.visible}
+                              onChange={() => setCheckbox(!checkbox)}
+                            />
+                            <div
+                              className={`w-[3.5rem] h-[2rem] rounded-[50px] relative border ${
+                                link.visible
+                                  ? "border-PrimaryPurple bg-PrimaryPurple"
+                                  : "border-Red bg-Red"
+                              }`}
+                            >
+                              <span
+                                className={`w-[1.65rem] h-[1.65rem] bg-PrimaryWhite rounded-full absolute translate-y-[7%] translate-x-[0.15rem] transition duration-500 ease-out ${
+                                  link.visible && "translate-x-[1.55rem]"
+                                }`}
+                              ></span>
+                            </div>
+                          </label>
+                        </div>
+
+                        <div className="flex items-center p-2 border border-Red rounded-[.5rem] cursor-pointer text-Red font-bold tracking-wide hover:bg-Red/40 px-4 md:px-4 py-2">
+                          <MdDeleteOutline
+                            className="md:mr-2 font-bold block md:hidden"
+                            size={21}
+                          />
+                          <span className="hidden md:block">Remove</span>
+                        </div>
+                      </div>
+
+                      {/* {optionId == index + 1 ? (
                         <RxCross2
                           size={20}
                           className="cursor-pointer fade-in"
@@ -138,9 +194,9 @@ function Links() {
                           className="cursor-pointer fade-in"
                           onClick={() => setOptionId(index + 1)}
                         />
-                      )}
+                      )} */}
 
-                      {optionId === index + 1 && (
+                      {/* {optionId === index + 1 && (
                         <div className="bg-PrimaryWhite absolute py-2 px-4 rounded-[.5rem] top-11 right-5  fade-in-tr shadow-xl">
                           <div className="flex items-center mb-1 cursor-pointer select-none">
                             <FaRegEye className="mr-2" /> Visible
@@ -152,7 +208,7 @@ function Links() {
                             <MdDeleteOutline className="mr-2" /> Delete
                           </div>
                         </div>
-                      )}
+                      )} */}
                     </div>
                     <div className="mb-2">
                       <p className="text-[.8rem] text-PrimaryGray mb-2">
@@ -164,7 +220,7 @@ function Links() {
                     </div>
                     <div className="mb-2">
                       <p className="text-[.8rem] text-PrimaryGray mb-2">Link</p>
-                      <div className="p-2 border border-PrimaryGray rounded-[.5rem]">
+                      <div className="p-2 border border-PrimaryGray rounded-[.5rem] block truncate ">
                         {link.url}
                       </div>
                     </div>
@@ -173,6 +229,9 @@ function Links() {
             </div>
           )}
         </div>
+
+        <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+        {/* {createPortal(<dialog open>Hello</dialog>, portalDom)} */}
       </div>
     </>
   );
