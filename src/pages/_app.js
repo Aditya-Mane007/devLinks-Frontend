@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import { store } from "@/store/store";
 import { Provider } from "react-redux";
+import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout ?? ((page) => page);
@@ -11,7 +12,7 @@ export default function App({ Component, pageProps }) {
       {getLayout(
         <>
           <Component {...pageProps} />
-          {/* <Toaster position="top-center" /> */}
+          <Toaster position="top-center" />
         </>
       )}
     </Provider>

@@ -13,6 +13,7 @@ function Login() {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
   const { email, password } = formState;
 
   const [errorState, setErrorState] = useState({
@@ -43,6 +44,7 @@ function Login() {
     };
 
     try {
+      setLoading(true);
       const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/auth/login", {
         method: "POST",
         body: JSON.stringify(formData),
@@ -67,6 +69,7 @@ function Login() {
         }, 1000);
       }
 
+      setLoading(false);
       toast.success(data.message, {
         duration: 1000,
       });
@@ -229,7 +232,7 @@ function Login() {
             hover:bg-SecondaryPurple transition duration-150
             "
             >
-              Login
+              {loading ? "Logging you in" : "Login"}
             </button>
             <p className="text-center text-PrimaryGray select-none">
               Don’t have an account?{" "}

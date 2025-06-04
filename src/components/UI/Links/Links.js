@@ -9,84 +9,131 @@ import { RxCross2 } from "react-icons/rx";
 import { createPortal } from "react-dom";
 import Modal from "../Modal/Modal";
 import Select from "../Select/Select";
+import { DummyData } from "@/components/utils";
+import toast from "react-hot-toast";
 
-function Links() {
-  const [Links, setLinks] = useState([
-    {
-      title: "Youtube",
-      url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
-      visible: false,
-    },
-    {
-      title: "Youtube",
-      url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
-      visible: true,
-    },
-    {
-      title: "Youtube",
-      url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
-      visible: false,
-    },
-    {
-      title: "Youtube",
-      url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
-      visible: true,
-    },
-    {
-      title: "Youtube",
-      url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
-      visible: true,
-    },
-    {
-      title: "Youtube",
-      url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
-      visible: true,
-    },
-    {
-      title: "Youtube",
-      url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
-      visible: true,
-    },
-    {
-      title: "Youtube",
-      url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
-      visible: true,
-    },
-    {
-      title: "Youtube",
-      url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
-      visible: true,
-    },
-    {
-      title: "Youtube",
-      url: "https://youtube.com/@mr.billionaire47?si=9bO9mhj_oWbX6zXE",
-      visible: true,
-    },
-  ]);
+function Links({ data }) {
+  console.log("Server Side Prop Data : ", data);
+  const [Links, setLinks] = useState([]);
 
   const [checkbox, setCheckbox] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const fetchLinks = async () => {
+    try {
+      const res = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + "/link/getLinks",
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.message, {
+          duration: 1000,
+        });
+        return;
+      }
+
+      setLinks(data.links);
+
+      toast.success(data.message, {
+        duration: 1000,
+      });
+    } catch (error) {
+      return toast.error(error.message, {
+        duration: 1000,
+      });
+    }
+  };
+
+  const updateLink = async (id) => {
+    try {
+      const res = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + `/link/updateLink/${id}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.message, {
+          duration: 1000,
+        });
+        return;
+      }
+
+      setLinks(data.links);
+
+      toast.success(data.message, {
+        duration: 1000,
+      });
+    } catch (error) {
+      return toast.error(error.message, {
+        duration: 1000,
+      });
+    }
+  };
+
+  const deleteLink = async (id) => {
+    try {
+      const res = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + `/link/deleteLink/${id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.message, {
+          duration: 1000,
+        });
+        return;
+      }
+
+      setLinks(data.links);
+
+      toast.success(data.message, {
+        duration: 1000,
+      });
+    } catch (error) {
+      return toast.error(error.message, {
+        duration: 1000,
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchLinks();
+  }, []);
+
   return (
     <>
-      <SEO
+      {/* <SEO
         title="Customize your links | devLinks"
         description="Add/edit/remove links below and then share all your profiles with the world!"
-      />
+      /> */}
       <div
         className="w-full h-full flex justify-between"
         aria-hidden={isModalOpen}
       >
-        <div className="hidden lg:flex w-[33%] h-full justify-center items-center bg-PrimaryWhite rounded-[.5rem] py-12 h-[85vh]s">
-          <div>
-            <Image
-              src="/assets/images/illustration-phone-mockup.svg"
-              width={100}
-              height={100}
-              alt="Phone Mockup"
-              className="w-[70%] h-full mx-auto flex items-start"
-            />
-          </div>
+        <div className="hidden lg:flex w-[33%] justify-center items-center bg-PrimaryWhite rounded-[.5rem] py-12 h-[85vh]">
+          <Image
+            src="/assets/images/illustration-phone-mockup.svg"
+            width={100}
+            height={100}
+            alt="Phone Mockup"
+            className="w-[70%] h-full mx-auto"
+          />
         </div>
         <div className="w-full lg:w-[65%] p-[1.5rem] bg-PrimaryWhite flex flex-col h-[85vh] rounded-[.5rem]">
           <h1 className="text-[2rem] font-instrumentBold p-0 lg:leading-none">
@@ -129,7 +176,7 @@ function Links() {
               {Links &&
                 Links.map((link, index) => (
                   <div
-                    key={index}
+                    key={link._id}
                     className={`p-4 pb-[.5rem] rounded-[0.6rem] bg-SecondaryWhite relative ${
                       Links.length !== index + 1 ? "mb-4" : "mb-0"
                     } `}
@@ -173,7 +220,10 @@ function Links() {
                           </label>
                         </div>
 
-                        <div className="flex items-center p-2 border border-Red rounded-[.5rem] cursor-pointer text-Red font-bold tracking-wide hover:bg-Red/40 px-4 md:px-4 py-2">
+                        <div
+                          className="flex items-center p-2 border border-Red rounded-[.5rem] cursor-pointer text-Red font-bold tracking-wide hover:bg-Red/40 px-4 md:px-4 py-2"
+                          onClick={() => deleteLink(link._id)}
+                        >
                           <MdDeleteOutline
                             className="md:mr-2 font-bold block md:hidden"
                             size={21}
@@ -181,41 +231,13 @@ function Links() {
                           <span className="hidden md:block">Remove</span>
                         </div>
                       </div>
-
-                      {/* {optionId == index + 1 ? (
-                        <RxCross2
-                          size={20}
-                          className="cursor-pointer fade-in"
-                          onClick={() => setOptionId(null)}
-                        />
-                      ) : (
-                        <BiDotsVerticalRounded
-                          size={20}
-                          className="cursor-pointer fade-in"
-                          onClick={() => setOptionId(index + 1)}
-                        />
-                      )} */}
-
-                      {/* {optionId === index + 1 && (
-                        <div className="bg-PrimaryWhite absolute py-2 px-4 rounded-[.5rem] top-11 right-5  fade-in-tr shadow-xl">
-                          <div className="flex items-center mb-1 cursor-pointer select-none">
-                            <FaRegEye className="mr-2" /> Visible
-                          </div>
-                          <div className="flex items-center mb-1 cursor-pointer select-none">
-                            <FaRegEdit className="mr-2" /> Update
-                          </div>
-                          <div className="flex items-center mb-1 cursor-pointer select-none">
-                            <MdDeleteOutline className="mr-2" /> Delete
-                          </div>
-                        </div>
-                      )} */}
                     </div>
                     <div className="mb-2">
                       <p className="text-[.8rem] text-PrimaryGray mb-2">
                         Platform
                       </p>
                       <div className="p-2 border border-PrimaryGray rounded-[.5rem]">
-                        {link.title}
+                        {link.platform}
                       </div>
                     </div>
                     <div className="mb-2">
@@ -239,17 +261,15 @@ function Links() {
 
 export default Links;
 
-// <div className="w-full h-full flex  mt-5">
-//   <div className="w-[35%] h-full flex justify-center items-center">
-//     <div className="w-[80%]">
-//       <Image
-//         src="/assets/images/illustration-phone-mockup.svg"
-//         width={100}
-//         height={100}
-//         alt="Phone Mockup"
-//         className=" w-full object-scale-down"
-//       />
-//     </div>
-//   </div>
-//   <div className="w-[65%] p-[2rem] overflow-y-scroll">Links</div>
-// </div>
+// export async function getServerSideProps() {
+//   const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/link/getLinks", {
+//     method: "GET",
+//     credentials: "include",
+//   });
+
+//   const data = await res.json();
+
+//   const links = data.links;
+
+//   return { props: { data: links } };
+// }

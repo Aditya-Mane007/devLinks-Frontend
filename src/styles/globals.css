@@ -77,3 +77,183 @@ option {
 #select-popover-options {
   display: none !important;
 } */
+
+/* .phoneMockupDiv {
+  width: 100%;
+  max-width: 500px;
+  height: 100%;
+  max-height: 500px;
+  background-image: url("/assets/images/illustration-phone-mockup.svg");
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.phoneMockupDiv .iframeContainer {
+  width: 42.5%;
+  max-width: 300px;
+  height: 100%;
+  max-height: 500px;
+
+  position: absolute;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.phoneMockupDiv .iframeContainer header {
+  width: 100%;
+  height: 8%;
+  background-color: #beadff;
+  opacity: 0.5;
+}
+
+.phoneMockupDiv .iframeContainer footer {
+  width: 100%;
+  height: 8%;
+  background-color: #beadff;
+  opacity: 0.5;
+}
+
+.phoneMockupDiv .iframeContainer main {
+  flex: 1;
+  width: 100%;
+  background-color: #633cff;
+}
+
+.phoneMockupDiv .iframeContainer main iframe {
+  width: 100% !important;
+  height: 100% !important;
+} */
+
+/* .mockupWrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #111827; dark background for depth
+}
+
+.phoneMockup {
+  width: 300px;
+  height: 600px;
+  background-image: url("/assets/images/illustration-phone-mockup.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+}
+
+
+.iframeScreen {
+  position: absolute;
+  top: 13.5%;
+  left: 13%;
+  width: 74%;
+  height: 72%;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px #ccc;
+}
+
+.iframeScreen iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 24px;
+} */
+
+.phoneMockupDiv {
+  /* width: 100%;
+  height: 100%;
+  max-width: 300px;
+  max-height: 500px; */
+  width: 400px;
+  height: 850px;
+  background-image: url("/assets/images/illustration-phone-mockup.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(0.95);
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.phoneMockupDiv .iframeContainer {
+  width: 55%;
+  max-width: 390px;
+  height: 100%;
+  max-height: 535px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 18%;
+}
+/* 
+@media (resolution: 96dpi) {
+  .phoneMockupDiv {
+    width: 400px;
+    height: 800px;
+    background-image: url("/assets/images/illustration-phone-mockup.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: scale(0.9);
+  }
+}
+
+@media (resolution: 120dpi) {
+  .phoneMockupDiv {
+    width: 400px;
+    height: 850px;
+    background-image: url("/assets/images/illustration-phone-mockup.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: scale(0.7);
+  }
+} */
+
+/* .phoneMockupDiv .iframeContainer {
+  width: 390px;
+  height: 844px;
+  top: 13px;
+  left: 16px; */
+/* transform: scale(0.6975);
+  display: flex;
+  overflow: scroll;
+} */
+
+.phoneMockupDiv .iframeContainer header,
+footer {
+  height: 8%;
+  /* background-color: #beadff; */
+}
+
+.phoneMockupDiv .iframeContainer main {
+  flex: 1;
+  /* background-color: #beadff; */
+}
+
+.phoneMockupDiv .iframeContainer main iframe {
+  width: 100%;
+  height: 100%;
+}
+
+.ImagesDiv {
+  width: 100%;
+  height: auto;
+}
+
+/* .ImagesDiv div {
+  width: 33.33%;
+  padding: 0 0.5rem;
+}
+
+.ImagesDiv div:nth-child(3) {
+  width: 33.33%;
+  padding: 0 1rem;
+} */
