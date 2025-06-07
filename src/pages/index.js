@@ -17,9 +17,6 @@ function Home({ initialLinks, messageText }) {
     (state) => state.link
   );
 
-  console.log("Links", links);
-  console.log("isSuccess", isSuccess);
-
   const [Links, setLinks] = useState(links);
   const [checkbox, setCheckbox] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);

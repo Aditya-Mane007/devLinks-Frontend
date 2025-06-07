@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import toast from "react-hot-toast";
 
-const protectedRoutes = ["/"];
+const protectedRoutes = ["/", "/profile", "/preview"];
 const publicRoutes = ["/login", "/register"];
 
 export async function middleware(request) {
