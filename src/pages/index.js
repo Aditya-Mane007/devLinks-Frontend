@@ -225,7 +225,7 @@ export async function getServerSideProps(context) {
     return {
       props: {
         initialLinks: [],
-        messageText: data.message,
+        messageText: "An error occurred while fetching links.",
       },
     };
   }

@@ -6,10 +6,6 @@ import React, { useState } from "react";
 
 function Preview({ initialLinks, messageText }) {
   const [links, setLinks] = useState(initialLinks);
-  // console.log(links);
-  // for (let i = 0; i < links.length; i++) {
-  //   console.log(LinksBackground[links[i].platform]);
-  // }
 
   return (
     <div className="w-full h-fit flex justify-center items-start">

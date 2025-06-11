@@ -13,7 +13,6 @@ import { DummyData } from "@/components/utils";
 import toast from "react-hot-toast";
 
 function Links({ data }) {
-  console.log("Server Side Prop Data : ", data);
   const [Links, setLinks] = useState([]);
 
   const [checkbox, setCheckbox] = useState(false);

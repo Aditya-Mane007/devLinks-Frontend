@@ -126,59 +126,59 @@ export const DummyData = [
 
 export const LinksBackground = {
   GitHub: {
-    icon: "/assets/images/icon-github.svg",
+    icon: "/assets/images/whiteIcons/icon-github.svg",
     color: "#1A1A1A",
   },
   "Frontend Mentor": {
-    icon: "/assets/images/icon-frontend-mentor.svg",
+    icon: "/assets/images/whiteIcons/icon-frontend-mentor.svg",
     color: "#bcbcbc",
   },
   Twitter: {
-    icon: "/assets/images/icon-twitter.svg",
+    icon: "/assets/images/whiteIcons/icon-twitter.svg",
     color: "#43B7E9",
   },
   LinkedIn: {
-    icon: "/assets/images/icon-linkedin.svg",
+    icon: "/assets/images/whiteIcons/icon-linkedin.svg",
     color: "#2D68FF",
   },
   YouTube: {
-    icon: "/assets/images/icon-youtube.svg",
+    icon: "/assets/images/whiteIcons/icon-youtube.svg",
     color: "#EE3939",
   },
   Facebook: {
-    icon: "/assets/images/icon-facebook.svg",
+    icon: "/assets/images/whiteIcons/icon-facebook.svg",
     color: "#2442AC",
   },
   Twitch: {
-    icon: "/assets/images/icon-twitch.svg",
+    icon: "/assets/images/whiteIcons/icon-twitch.svg",
     color: "#EE3FC8",
   },
   "Dev.to": {
-    icon: "/assets/images/icon-devto.svg",
+    icon: "/assets/images/whiteIcons/icon-devto.svg",
     color: "#333333",
   },
   Codewars: {
-    icon: "/assets/images/icon-codewars.svg",
+    icon: "/assets/images/whiteIcons/icon-codewars.svg",
     color: "#8A1A50",
   },
   freeCodeCamp: {
-    icon: "/assets/images/icon-freecodecamp.svg",
+    icon: "/assets/images/whiteIcons/icon-freecodecamp.svg",
     color: "#302267",
   },
   GitLab: {
-    icon: "/assets/images/icon-gitlab.svg",
+    icon: "/assets/images/whiteIcons/icon-gitlab.svg",
     color: "#EB4925",
   },
   Hashnode: {
-    icon: "/assets/images/icon-hashnode.svg",
+    icon: "/assets/images/whiteIcons/icon-hashnode.svg",
     color: "#0330D1",
   },
   "Stack Overflow": {
-    icon: "/assets/images/icon-stack-overflow.svg",
+    icon: "/assets/images/whiteIcons/icon-stack-overflow.svg",
     color: "#EC7100",
   },
   Codepen: {
-    icon: "/assets/images/icon-codepen.svg",
+    icon: "/assets/images/whiteIcons/icon-codepen.svg",
     color: "#4bc96a",
   },
 };
