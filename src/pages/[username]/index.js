@@ -43,9 +43,8 @@ function Username({ userInfo, status, messageText }) {
               ) : (
                 <div className="flex justify-center items-center">
                   <IoIosArrowBack size={30} className="-mx-1" />
-                  /
+                  <span className="mr-1">{userInfo.userInfo.username}</span>/
                   <IoIosArrowForward size={30} className="-mx-1 mr-1" />
-                  {userInfo.userInfo.username}
                 </div>
               )}
             </h1>

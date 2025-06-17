@@ -63,11 +63,10 @@ function Login() {
         return;
       }
 
-      if (data) {
-        setTimeout(() => {
-          router.push("/");
-        }, 1000);
-      }
+      localStorage.setItem("User", JSON.stringify(data.user));
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
 
       setLoading(false);
       toast.success(data.message, {

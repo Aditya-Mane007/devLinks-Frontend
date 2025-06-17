@@ -6,10 +6,18 @@ import ProfileDetail from "@/components/UI/ProfileDetail/ProfileDetail";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "@/components/UI/Modal/Modal";
-import { deleteLink, getLinks, reset } from "@/features/Links/linkSlice";
+import {
+  deleteLink,
+  getLinks,
+  reset,
+  setInitialLinks,
+} from "@/features/Links/linkSlice";
 import toast from "react-hot-toast";
 import { MdDeleteOutline } from "react-icons/md";
+import { FiEdit } from "react-icons/fi";
 import { DummyData } from "@/components/utils";
+import Select from "@/components/UI/Select/Select";
+import EditModal from "@/components/UI/Modal/EditModal";
 
 function Home({ initialLinks, messageText }) {
   const dispatch = useDispatch();
@@ -20,37 +28,45 @@ function Home({ initialLinks, messageText }) {
   const [Links, setLinks] = useState(links);
   const [checkbox, setCheckbox] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  useEffect(() => {
-    setLinks(links);
-  }, [links]);
+  const [editLinkInfo, setEditLinkInfo] = useState({
+    id: "",
+    platformText: "",
+    linkText: "",
+  });
 
   useEffect(() => {
     if (initialLinks && initialLinks.length > 0) {
       setLinks(initialLinks);
+      dispatch(setInitialLinks(initialLinks));
       toast.success(messageText, {
         duration: 1000,
       });
     } else {
-      toast.error(messageText, {
-        duration: 1000,
-      });
+      dispatch(setInitialLinks([]));
+      toast.error(
+        initialLinks.length < 1
+          ? "No links found , Add a new link"
+          : messageText,
+        {
+          duration: 1000,
+        }
+      );
     }
   }, []);
 
-  // const deleteLink = async (id) => {
-  //   const res = await fetch(
-  //     process.env.NEXT_PUBLIC_API_URL + `/link/deleteLink/${id}`,
-  //     {
-  //       method: "DELETE",
-  //       credentials: "include",
-  //     }
-  //   );
+  useEffect(() => {
+    setLinks(links);
 
-  //   const data = await res.json();
+    if (isSuccess) {
+      toast.success(message);
+    }
 
-  //   return data;
-  // };
+    if (isError) {
+      toast.error(message);
+    }
+  }, [links, message, isLoading, isError, isSuccess]);
 
   return (
     <>
@@ -109,7 +125,7 @@ function Home({ initialLinks, messageText }) {
                           width={15}
                           height={15}
                           alt={index}
-                          className="mr-3 cursor-grab"
+                          className="mr-3 cursor-grab w-auto h-auto"
                         />
                         <p>Link #{index + 1}</p>
                       </div>
@@ -126,7 +142,8 @@ function Home({ initialLinks, messageText }) {
                               onChange={() => setCheckbox(!checkbox)}
                             />
                             <div
-                              className={`w-[3.5rem] h-[2rem] rounded-[50px] relative border ${
+                              title="Make it public or private by toggling "
+                              className={`w-[3.5rem] cursor-pointer h-[2rem] rounded-[50px] relative border ${
                                 link.visible
                                   ? "border-PrimaryPurple bg-PrimaryPurple"
                                   : "border-Red bg-Red"
@@ -142,8 +159,28 @@ function Home({ initialLinks, messageText }) {
                         </div>
 
                         <div
+                          className="flex items-center p-2 border border-PrimaryPurple rounded-[.5rem] cursor-pointer text-PrimaryPurple font-bold tracking-wide hover:bg-LightPurple px-4 md:px-4 py-[.6rem] mr-2"
+                          onClick={() => {
+                            setIsEditModalOpen(!isEditModalOpen);
+                            setEditLinkInfo({
+                              id: link._id,
+                              platformText: link.platform,
+                              linkText: link.url,
+                            });
+                          }}
+                          title="Edit Link"
+                        >
+                          <FiEdit
+                            className="md:mr-2 font-bold block md:hidden"
+                            size={18}
+                          />
+                          <span className="hidden md:block">Edit</span>
+                        </div>
+
+                        <div
                           className="flex items-center p-2 border border-Red rounded-[.5rem] cursor-pointer text-Red font-bold tracking-wide hover:bg-Red/40 px-4 md:px-4 py-2"
                           onClick={() => dispatch(deleteLink(link._id))}
+                          title="Remove Link"
                         >
                           <MdDeleteOutline
                             className="md:mr-2 font-bold block md:hidden"
@@ -188,7 +225,18 @@ function Home({ initialLinks, messageText }) {
             </div>
           )}
         </div>
-        <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+        {isModalOpen && (
+          <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+        )}
+        {isEditModalOpen && (
+          <EditModal
+            isModalOpen={isEditModalOpen}
+            setIsModalOpen={setIsEditModalOpen}
+            platformText={editLinkInfo?.platformText}
+            linkText={editLinkInfo?.linkText}
+            id={editLinkInfo?.id}
+          />
+        )}
       </div>
     </>
   );

@@ -2,17 +2,32 @@ import Navbar from "@/components/UI/Navbar/Navbar";
 import { LinksBackground } from "@/components/utils";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 function Preview({ initialLinks, messageText }) {
   const [links, setLinks] = useState(initialLinks);
+
+  const [userInfo, setUserInfo] = useState("");
+
+  useEffect(() => {
+    setUserInfo(JSON.parse(localStorage.getItem("User")));
+  }, []);
 
   return (
     <div className="w-full h-fit flex justify-center items-start">
       <div className="w-[90%] md:w-[50%] lg:w-[35%] bg-PrimaryWhite p-[1.5rem] rounded-[1rem]">
         <div className="w-[7rem] h-[7rem] bg-PrimaryGray rounded-full mx-auto"></div>
         <h1 className="mt-4 mb-1 text-3xl text-center font-bold">
-          Aditya Mane
+          {userInfo?.fullName ? (
+            userInfo.fullName
+          ) : (
+            <div className="flex justify-center items-center">
+              <IoIosArrowBack size={30} className="-mx-1" />
+              <span className="mr-1">{userInfo.username}</span>/
+              <IoIosArrowForward size={30} className="-mx-1 mr-1" />
+            </div>
+          )}
         </h1>
         <p className="text-center text-PrimaryGray">aditya@gmail.com</p>
         <div className="w-full h-auto flex flex-col mt-4 text-PrimaryWhite">

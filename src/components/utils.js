@@ -1,73 +1,159 @@
+// export const LinksOption = [
+//   {
+//     id: 0,
+//     title: "GitHub",
+//     icon: "/assets/images/icon-github.svg",
+//   {
+//     id: 1,
+//     title: "Frontend Mentor",
+//     icon: "/assets/images/icon-frontend-mentor.svg",
+//   },
+//   {
+//     id: 2,
+//     title: "Twitter",
+//     icon: "/assets/images/icon-twitter.svg",
+//   },
+//   {
+//     id: 3,
+//     title: "LinkedIn",
+//     icon: "/assets/images/icon-linkedin.svg",
+//   },
+//   {
+//     id: 4,
+//     title: "YouTube",
+//     icon: "/assets/images/icon-youtube.svg",
+//   },
+//   {
+//     id: 5,
+//     title: "Facebook",
+//     icon: "/assets/images/icon-facebook.svg",
+//   },
+//   {
+//     id: 6,
+//     title: "Twitch",
+//     icon: "/assets/images/icon-twitch.svg",
+//   },
+//   {
+//     id: 7,
+//     title: "Dev.to",
+//     icon: "/assets/images/icon-devto.svg",
+//   },
+//   {
+//     id: 8,
+//     title: "Codewars",
+//     icon: "/assets/images/icon-codewars.svg",
+//   },
+//   {
+//     id: 9,
+//     title: "Codepen",
+//     icon: "/assets/images/icon-codepen.svg",
+//   },
+//   {
+//     id: 10,
+//     title: "freeCodeCamp",
+//     icon: "/assets/images/icon-freecodecamp.svg",
+//   },
+//   {
+//     id: 11,
+//     title: "GitLab",
+//     icon: "/assets/images/icon-gitlab.svg",
+//   },
+//   {
+//     id: 12,
+//     title: "Hashnode",
+//     icon: "/assets/images/icon-hashnode.svg",
+//   },
+//   {
+//     id: 13,
+//     title: "Stack Overflow",
+//     icon: "/assets/images/icon-stack-overflow.svg",
+//   },
+// ];
+
 export const LinksOption = [
   {
     id: 0,
     title: "GitHub",
     icon: "/assets/images/icon-github.svg",
+    pattern: "https://github.com/{username}",
   },
   {
     id: 1,
     title: "Frontend Mentor",
     icon: "/assets/images/icon-frontend-mentor.svg",
+    pattern: "https://www.frontendmentor.io/profile/{username}",
   },
   {
     id: 2,
     title: "Twitter",
     icon: "/assets/images/icon-twitter.svg",
+    pattern: "https://twitter.com/{username}",
   },
   {
     id: 3,
     title: "LinkedIn",
     icon: "/assets/images/icon-linkedin.svg",
+    pattern: "https://www.linkedin.com/in/{username}",
   },
   {
     id: 4,
     title: "YouTube",
     icon: "/assets/images/icon-youtube.svg",
+    pattern: "https://www.youtube.com/@{username}",
   },
   {
     id: 5,
     title: "Facebook",
     icon: "/assets/images/icon-facebook.svg",
+    pattern: "https://www.facebook.com/{username}",
   },
   {
     id: 6,
     title: "Twitch",
     icon: "/assets/images/icon-twitch.svg",
+    pattern: "https://www.twitch.tv/{username}",
   },
   {
     id: 7,
     title: "Dev.to",
     icon: "/assets/images/icon-devto.svg",
+    pattern: "https://dev.to/{username}",
   },
   {
     id: 8,
     title: "Codewars",
     icon: "/assets/images/icon-codewars.svg",
+    pattern: "https://www.codewars.com/users/{username}",
   },
   {
     id: 9,
     title: "Codepen",
     icon: "/assets/images/icon-codepen.svg",
+    pattern: "https://codepen.io/{username}",
   },
   {
     id: 10,
     title: "freeCodeCamp",
     icon: "/assets/images/icon-freecodecamp.svg",
+    pattern: "https://www.freecodecamp.org/{username}",
   },
   {
     id: 11,
     title: "GitLab",
     icon: "/assets/images/icon-gitlab.svg",
+    pattern: "https://gitlab.com/{username}",
   },
   {
     id: 12,
     title: "Hashnode",
     icon: "/assets/images/icon-hashnode.svg",
+    pattern: "https://hashnode.com/@{username}",
   },
   {
     id: 13,
     title: "Stack Overflow",
     icon: "/assets/images/icon-stack-overflow.svg",
+    pattern: "https://stackoverflow.com/users/{userId}",
   },
 ];
 

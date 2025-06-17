@@ -86,9 +86,10 @@ function Select({ label, platform, setPlatform, platformError }) {
           <div>
             <Image
               src="/assets/images/icon-chevron-down.svg"
-              className={visible ? "rotate-180" : "rotate-0"}
+              className={visible ? "rotate-180" : "rotate-0" + "h-auto w-auto"}
               width={15}
               height={15}
+              alt={platform}
             />
           </div>
         </button>
@@ -108,7 +109,7 @@ function Select({ label, platform, setPlatform, platformError }) {
                     ? "border-none pb-1 p-2 rounded-[.5rem] mb-1"
                     : "border-b-[1px] border-PrimaryGray pb-1 mb-2 p-2 rounded-[.5rem]"
                 } ${
-                  selectedIndex === index
+                  selectedIndex === index || platform === link.title
                     ? "bg-SecondaryPurple text-black"
                     : "bg-PrimaryWhite"
                 } flex cursor-pointer outline-PrimaryPurple outline-1`}

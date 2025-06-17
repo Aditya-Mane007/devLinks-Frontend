@@ -183,7 +183,7 @@ function Links({ data }) {
                     <div className="flex justify-between items-center">
                       <div className="flex">
                         <Image
-                          src="/assets/images/icon-drag-and-drop.svg"
+                          src="/assets/images/icon-drag-and-drop.svg w-auto h-auto"
                           width={15}
                           height={15}
                           alt={index}

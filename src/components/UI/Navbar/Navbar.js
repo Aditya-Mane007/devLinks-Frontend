@@ -37,7 +37,7 @@ function Navbar({ isPreview }) {
                 width={42}
                 height={32}
                 alt="DevLinks"
-                className="block md:hidden"
+                className="block md:hidden w-auto h-auto"
               />
             </Link>
           )}

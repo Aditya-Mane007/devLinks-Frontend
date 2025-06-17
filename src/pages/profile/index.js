@@ -25,6 +25,8 @@ function Profile() {
         return;
       }
 
+      localStorage.removeItem("User");
+
       const data = await res.json();
 
       if (res.ok) {

@@ -6,14 +6,20 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { getLinks } from "@/features/Links/linkSlice";
 
-function Modal({ isModalOpen, setIsModalOpen }) {
+function EditModal({
+  isModalOpen,
+  setIsModalOpen,
+  platformText,
+  linkText,
+  id,
+}) {
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
   const focusRef = useRef(null);
 
   // Input Fileds
-  const [platform, setPlatform] = useState("");
-  const [link, setLink] = useState("");
+  const [platform, setPlatform] = useState(platformText);
+  const [link, setLink] = useState(linkText);
 
   // Errors
   const [platformError, setPlatformError] = useState("");
@@ -50,11 +56,13 @@ function Modal({ isModalOpen, setIsModalOpen }) {
       url: link,
     };
 
+    console.log(formData);
+
     try {
       const res = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + "/link/createLink",
+        process.env.NEXT_PUBLIC_API_URL + `/link/updateLink/${id}`,
         {
-          method: "POST",
+          method: "PUT",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
@@ -70,12 +78,6 @@ function Modal({ isModalOpen, setIsModalOpen }) {
         });
         return;
       }
-
-      // if (data) {
-      //   setTimeout(() => {
-      //     router.push("/");
-      //   }, 1000);
-      // }
 
       dispatch(getLinks());
 
@@ -94,10 +96,6 @@ function Modal({ isModalOpen, setIsModalOpen }) {
       }
     }
   };
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const handleEscClose = (e) => {
     if (e.keyCode === 27) {
@@ -120,6 +118,13 @@ function Modal({ isModalOpen, setIsModalOpen }) {
       document.removeEventListener("keydown", handleEscClose);
     };
   }, []);
+
+  useEffect(() => {
+    setMounted(true);
+    setPlatform(platformText);
+    setLink(linkText);
+  }, []);
+
   if (!mounted || !isModalOpen) return null;
 
   return createPortal(
@@ -133,16 +138,16 @@ function Modal({ isModalOpen, setIsModalOpen }) {
     >
       <div className="w-full h-full flex justify-center items-center opacity-1 ">
         <div className="w-[90%] md:w-[30%] h-fit bg-PrimaryWhite rounded-[.5rem] px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex justify-between items-center">
             <h1 className="text-[1.5rem] text-Black font-instrumentBold p-0 lg:leading-none">
-              Add link
+              Edit link
             </h1>
 
             <IoClose
-              role="button"
               size={21}
               className="cursor-pointer"
               onClick={handleClose}
+              role="button"
             />
           </div>
           <div className="formDiv mt-2">
@@ -178,7 +183,7 @@ function Modal({ isModalOpen, setIsModalOpen }) {
                   type="submit"
                   className="w-fit px-4 py-2 rounded-[.5rem] border bg-PrimaryPurple text-PrimaryWhite hover:bg-PrimaryPurple/80 font-semibold"
                 >
-                  + Add new link
+                  Edit link
                 </button>
               </div>
             </form>
@@ -190,4 +195,4 @@ function Modal({ isModalOpen, setIsModalOpen }) {
   );
 }
 
-export default Modal;
+export default EditModal;

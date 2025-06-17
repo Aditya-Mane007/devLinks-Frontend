@@ -68,6 +68,8 @@ function Register() {
         return;
       }
 
+      localStorage.setItem("User", JSON.stringify(data.user));
+
       setTimeout(() => {
         router.push("/");
       }, 1000);

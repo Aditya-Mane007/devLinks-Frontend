@@ -57,6 +57,9 @@ export const LinkSlice = createSlice({
       state.isError = false;
       state.message = false;
     },
+    setInitialLinks: (state, action) => {
+      state.links = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -103,6 +106,6 @@ export const LinkSlice = createSlice({
   },
 });
 
-export const { reset } = LinkSlice.actions;
+export const { reset, setInitialLinks } = LinkSlice.actions;
 
 export default LinkSlice.reducer;
