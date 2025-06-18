@@ -75,85 +75,109 @@ export const LinksOption = [
     id: 0,
     title: "GitHub",
     icon: "/assets/images/icon-github.svg",
-    pattern: "https://github.com/{username}",
+    pattern:
+      "^(?:https?:\\/\\/)?(?:www\\.)?github\\.com\\/[A-Za-z0-9._~\\-\\*]{1,}\\/?$",
   },
   {
     id: 1,
     title: "Frontend Mentor",
     icon: "/assets/images/icon-frontend-mentor.svg",
-    pattern: "https://www.frontendmentor.io/profile/{username}",
+    pattern:
+      "^(?:https?:\\/\\/)?(?:www\\.)?frontendmentor\\.io\\/profile\\/[A-Za-z0-9_~\\-\\*]{1,}\\/?$",
   },
   {
     id: 2,
     title: "Twitter",
     icon: "/assets/images/icon-twitter.svg",
-    pattern: "https://twitter.com/{username}",
+    pattern:
+      "^(?:https?:\\/\\/)?(?:www\\.)?twitter\\.com\\/[A-Za-z0-9_~\\-\\*]{1,}\\/?$",
   },
   {
     id: 3,
     title: "LinkedIn",
     icon: "/assets/images/icon-linkedin.svg",
-    pattern: "https://www.linkedin.com/in/{username}",
+    // pattern: "https://www.linkedin.com/in/{username}",
+    pattern:
+      "^(?:https?:\\/\\/)?(?:www\\.)?linkedin\\.com\\/in\\/[A-Za-z0-9_~\\-\\*]{1,}\\/?$",
   },
   {
     id: 4,
     title: "YouTube",
     icon: "/assets/images/icon-youtube.svg",
-    pattern: "https://www.youtube.com/@{username}",
+    // pattern: "https://www.youtube.com/@{username}",
+    pattern:
+      "^(?:https?:\\/\\/)?(?:www\\.)?youtube\\.com\\/@[A-Za-z0-9_~\\-\\*]{1,}\\/?$",
   },
   {
     id: 5,
     title: "Facebook",
     icon: "/assets/images/icon-facebook.svg",
-    pattern: "https://www.facebook.com/{username}",
+    // pattern: "https://www.facebook.com/{username}",
+    pattern:
+      "^(?:https?:\\/\\/)?(?:www\\.)?facebook\\.com\\/[A-Za-z0-9_~\\-\\*]{1,}\\/?$",
   },
   {
     id: 6,
     title: "Twitch",
     icon: "/assets/images/icon-twitch.svg",
-    pattern: "https://www.twitch.tv/{username}",
+    // pattern: "https://www.twitch.tv/{username}",
+    pattern:
+      "^(?:https?:\\/\\/)?(?:www\\.)?twitch\\.tv\\/[A-Za-z0-9_~\\-\\*]{1,}\\/?$",
   },
   {
     id: 7,
     title: "Dev.to",
     icon: "/assets/images/icon-devto.svg",
-    pattern: "https://dev.to/{username}",
+    // pattern: "https://dev.to/{username}",
+    pattern:
+      "^(?:https?:\\/\\/)?(?:www\\.)?dev\\.to\\/[A-Za-z0-9_~\\-\\*]{1,}\\/?$",
   },
   {
     id: 8,
     title: "Codewars",
     icon: "/assets/images/icon-codewars.svg",
-    pattern: "https://www.codewars.com/users/{username}",
+    // pattern: "https://www.codewars.com/users/{username}",
+    pattern:
+      "^(?:https?:\\/\\/)?(?:www\\.)?codewars\\.com\\/users\\/[A-Za-z0-9_~\\-\\*]{1,}\\/?$",
   },
   {
     id: 9,
     title: "Codepen",
     icon: "/assets/images/icon-codepen.svg",
-    pattern: "https://codepen.io/{username}",
+    // pattern: "https://codepen.io/{username}",
+    pattern:
+      "^(?:https?:\\/\\/)?(?:www\\.)?codepen\\.io\\/[A-Za-z0-9_~\\-\\*]{1,}\\/?$",
   },
   {
     id: 10,
     title: "freeCodeCamp",
     icon: "/assets/images/icon-freecodecamp.svg",
-    pattern: "https://www.freecodecamp.org/{username}",
+    // pattern: "https://www.freecodecamp.org/{username}",
+    pattern:
+      "^(?:https?:\\/\\/)?(?:www\\.)?freecodecamp\\.org\\/[A-Za-z0-9_~\\-\\*]{1,}\\/?$",
   },
   {
     id: 11,
     title: "GitLab",
     icon: "/assets/images/icon-gitlab.svg",
-    pattern: "https://gitlab.com/{username}",
+    // pattern: "https://gitlab.com/{username}",
+    pattern:
+      "^(?:https?:\\/\\/)?(?:www\\.)?gitlab\\.com\\/[A-Za-z0-9_~\\-\\*]{1,}\\/?$",
   },
   {
     id: 12,
     title: "Hashnode",
     icon: "/assets/images/icon-hashnode.svg",
-    pattern: "https://hashnode.com/@{username}",
+    // pattern: "https://hashnode.com/@{username}",
+    pattern:
+      "^(?:https?:\\/\\/)?(?:www\\.)?hashnode\\.com\\/@[A-Za-z0-9_~\\-\\*]{1,}\\/?$",
   },
   {
     id: 13,
     title: "Stack Overflow",
     icon: "/assets/images/icon-stack-overflow.svg",
-    pattern: "https://stackoverflow.com/users/{userId}",
+    pattern:
+      "^(?:https?:\\/\\/)?(?:www\\.)?stackoverflow\\.com\\/users\\/[A-Za-z0-9_~\\-\\*]{1,}\\/?$",
   },
 ];
 

@@ -2,11 +2,35 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/UI/Navbar/Navbar";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 
 function Profile() {
   const router = useRouter();
+  const [imageInput, setImageInput] = useState("");
+  const [imaagePreview, setImagePreview] = useState("");
+
+  const imageInputHandler = (e) => {
+    setImageInput(e.target.files[0]);
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      setImagePreview(reader.result);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const imageSubmitHandler = (e) => {
+    const formData = new FormData();
+    formData.append("profileImage", e.target.files[0]);
+
+    console.log(formData);
+  };
+
   const logoutHandler = async (e) => {
     e.preventDefault();
     try {
@@ -73,24 +97,38 @@ function Profile() {
               <div className="w-full flex items-center text-PrimaryGray md:px-[1rem] md:mb-0 mb-[1rem] text-">
                 Profile picture
               </div>
-              <div className="w-full h-[193px] bg-SecondaryPurple rounded-[.5rem] relative">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="w-full h-full opacity-0 cursor-pointer absolute "
+              {imageInput ? (
+                <Image
+                  src={imaagePreview}
+                  width={100}
+                  height={100}
+                  className="w-full md:w-[700px] h-[193px] rounded-[.5rem] object-cover sm:object-fill cursor-pointer "
                 />
-                <div className="flex flex-col items-center justify-center w-full h-full">
-                  <Image
-                    src="/assets/images/icon-upload-image.svg"
-                    width={30}
-                    height={30}
-                    alt="Upload Image"
-                  />
-                  <p className="text-PrimaryPurple my-2 font-bold">
-                    + Upload Image
-                  </p>
+              ) : (
+                <div className="md:w-[700px] h-[193px] bg-SecondaryPurple rounded-[.5rem] relative flex items-center justify-center cursor-pointer">
+                  <form enctype="multipart/form-data">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      value={imaagePreview}
+                      onChange={imageInputHandler}
+                      className="w-full h-full opacity-0 cursor-pointer absolute "
+                    />
+                    <div className="flex flex-col items-center justify-center w-full h-full">
+                      <Image
+                        src="/assets/images/icon-upload-image.svg"
+                        width={30}
+                        height={30}
+                        alt="Upload Image"
+                      />
+                      <p className="text-PrimaryPurple my-2 font-bold">
+                        + Upload Image
+                      </p>
+                    </div>
+                  </form>
                 </div>
-              </div>
+              )}
+
               <p className="w-full flex items-center text-PrimaryGray md:px-[1rem] text-[.9rem] mt-[1rem] md:mt-0">
                 Image must be below 1024x1024px. Use PNG or JPG format.
               </p>

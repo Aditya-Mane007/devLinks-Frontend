@@ -5,6 +5,7 @@ import Select from "../Select/Select";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { getLinks } from "@/features/Links/linkSlice";
+import { LinksOption } from "@/components/utils";
 
 function EditModal({
   isModalOpen,
@@ -41,6 +42,22 @@ function EditModal({
       setLinkError("");
       isvalid = true;
     }
+
+    if (platform && link) {
+      const regexPattern = new RegExp(
+        LinksOption.filter((option) => option.title === platform)[0].pattern
+      );
+
+      const isLinkValid = regexPattern.test(link);
+
+      if (!isLinkValid) {
+        setLinkError("is not valid");
+        isvalid = false;
+      } else {
+        setLinkError("");
+        isvalid = true;
+      }
+    }
     return isvalid;
   };
 
@@ -56,7 +73,7 @@ function EditModal({
       url: link,
     };
 
-    console.log(formData);
+
 
     try {
       const res = await fetch(

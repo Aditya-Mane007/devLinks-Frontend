@@ -5,6 +5,7 @@ import Select from "../Select/Select";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { getLinks } from "@/features/Links/linkSlice";
+import { LinksOption } from "@/components/utils";
 
 function Modal({ isModalOpen, setIsModalOpen }) {
   const dispatch = useDispatch();
@@ -35,6 +36,22 @@ function Modal({ isModalOpen, setIsModalOpen }) {
       setLinkError("");
       isvalid = true;
     }
+
+    if (platform && link) {
+      const regexPattern = new RegExp(
+        LinksOption.filter((option) => option.title === platform)[0].pattern
+      );
+
+      const isLinkValid = regexPattern.test(link);
+
+      if (!isLinkValid) {
+        setLinkError("is not valid");
+        isvalid = false;
+      } else {
+        setLinkError("");
+        isvalid = true;
+      }
+    }
     return isvalid;
   };
 
@@ -45,54 +62,54 @@ function Modal({ isModalOpen, setIsModalOpen }) {
     if (!isvalid) {
       return;
     }
-    const formData = {
-      platform: platform,
-      url: link,
-    };
+    // const formData = {
+    //   platform: platform,
+    //   url: link,
+    // };
 
-    try {
-      const res = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + "/link/createLink",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+    // try {
+    //   const res = await fetch(
+    //     process.env.NEXT_PUBLIC_API_URL + "/link/createLink",
+    //     {
+    //       method: "POST",
+    //       credentials: "include",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify(formData),
+    //     }
+    //   );
 
-      const data = await res.json();
-      if (!res.ok) {
-        toast.error(data.message, {
-          duration: 1000,
-        });
-        return;
-      }
+    //   const data = await res.json();
+    //   if (!res.ok) {
+    //     toast.error(data.message, {
+    //       duration: 1000,
+    //     });
+    //     return;
+    //   }
 
-      // if (data) {
-      //   setTimeout(() => {
-      //     router.push("/");
-      //   }, 1000);
-      // }
+    //   // if (data) {
+    //   //   setTimeout(() => {
+    //   //     router.push("/");
+    //   //   }, 1000);
+    //   // }
 
-      dispatch(getLinks());
+    //   dispatch(getLinks());
 
-      toast.success(data.message, {
-        duration: 1000,
-      });
+    //   toast.success(data.message, {
+    //     duration: 1000,
+    //   });
 
-      setTimeout(() => {
-        handleClose();
-      }, 1000);
-    } catch (error) {
-      if (!res.ok) {
-        return toast.error(error.message, {
-          duration: 1000,
-        });
-      }
-    }
+    //   setTimeout(() => {
+    //     handleClose();
+    //   }, 1000);
+    // } catch (error) {
+    //   if (!res.ok) {
+    //     return toast.error(error.message, {
+    //       duration: 1000,
+    //     });
+    //   }
+    // }
   };
 
   useEffect(() => {
