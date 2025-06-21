@@ -3,6 +3,7 @@ import { LinksBackground } from "@/components/utils";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 function Preview({ initialLinks, messageText }) {
@@ -14,6 +15,20 @@ function Preview({ initialLinks, messageText }) {
     setUserInfo(JSON.parse(localStorage.getItem("User")));
   }, []);
 
+  useEffect(() => {
+    if (initialLinks && initialLinks.length > 0) {
+      setLinks(initialLinks);
+      // dispatch(setInitialLinks(initialLinks));
+      toast.success(messageText, {
+        duration: 1000,
+      });
+    } else {
+      // dispatch(setInitialLinks([]));
+      toast.error(messageText, {
+        duration: 1000,
+      });
+    }
+  }, []);
   return (
     <div className="w-full h-fit flex justify-center items-start">
       <div className="w-[90%] md:w-[50%] lg:w-[35%] bg-PrimaryWhite p-[1.5rem] rounded-[1rem]">
@@ -103,7 +118,7 @@ export async function getServerSideProps(context) {
     return {
       props: {
         initialLinks: [],
-        messageText: data.message,
+        messageText: "An error occurred while fetching links.",
       },
     };
   }

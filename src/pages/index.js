@@ -19,7 +19,7 @@ import { DummyData } from "@/components/utils";
 import Select from "@/components/UI/Select/Select";
 import EditModal from "@/components/UI/Modal/EditModal";
 
-function Home({ initialLinks, messageText }) {
+function Home({ initialLinks, messageText, success }) {
   const dispatch = useDispatch();
   const { links, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.link
@@ -37,23 +37,31 @@ function Home({ initialLinks, messageText }) {
   });
 
   useEffect(() => {
-    if (initialLinks && initialLinks.length > 0) {
-      setLinks(initialLinks);
-      dispatch(setInitialLinks(initialLinks));
+    setLinks(initialLinks);
+    dispatch(setInitialLinks(initialLinks));
+
+    if (success) {
       toast.success(messageText, {
         duration: 1000,
       });
     } else {
-      dispatch(setInitialLinks([]));
-      toast.error(
-        initialLinks.length < 1
-          ? "No links found , Add a new link"
-          : messageText,
-        {
-          duration: 1000,
-        }
-      );
+      toast.error(messageText, {
+        duration: 1000,
+      });
     }
+
+    // if (initialLinks && initialLinks.length > 0) {
+    //   setLinks(initialLinks);
+    //   dispatch(setInitialLinks(initialLinks));
+    //   toast.success(messageText, {
+    //     duration: 1000,
+    //   });
+    // } else {
+    //   dispatch(setInitialLinks([]));
+    //   toast.error(messageText, {
+    //     duration: 1000,
+    //   });
+    // }
   }, []);
 
   useEffect(() => {
@@ -265,6 +273,7 @@ export async function getServerSideProps(context) {
 
     return {
       props: {
+        success: true,
         initialLinks: data.links || [],
         messageText: data.message,
       },
@@ -272,8 +281,9 @@ export async function getServerSideProps(context) {
   } catch (error) {
     return {
       props: {
+        success: false,
         initialLinks: [],
-        messageText: "An error occurred while fetching links.",
+        messageText: error.message,
       },
     };
   }

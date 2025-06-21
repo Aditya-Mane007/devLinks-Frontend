@@ -62,54 +62,54 @@ function Modal({ isModalOpen, setIsModalOpen }) {
     if (!isvalid) {
       return;
     }
-    // const formData = {
-    //   platform: platform,
-    //   url: link,
-    // };
+    const formData = {
+      platform: platform,
+      url: link,
+    };
 
-    // try {
-    //   const res = await fetch(
-    //     process.env.NEXT_PUBLIC_API_URL + "/link/createLink",
-    //     {
-    //       method: "POST",
-    //       credentials: "include",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(formData),
-    //     }
-    //   );
+    try {
+      const res = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + "/link/createLink",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
-    //   const data = await res.json();
-    //   if (!res.ok) {
-    //     toast.error(data.message, {
-    //       duration: 1000,
-    //     });
-    //     return;
-    //   }
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.message, {
+          duration: 1000,
+        });
+        return;
+      }
 
-    //   // if (data) {
-    //   //   setTimeout(() => {
-    //   //     router.push("/");
-    //   //   }, 1000);
-    //   // }
+      // if (data) {
+      //   setTimeout(() => {
+      //     router.push("/");
+      //   }, 1000);
+      // }
 
-    //   dispatch(getLinks());
+      dispatch(getLinks());
 
-    //   toast.success(data.message, {
-    //     duration: 1000,
-    //   });
+      toast.success(data.message, {
+        duration: 1000,
+      });
 
-    //   setTimeout(() => {
-    //     handleClose();
-    //   }, 1000);
-    // } catch (error) {
-    //   if (!res.ok) {
-    //     return toast.error(error.message, {
-    //       duration: 1000,
-    //     });
-    //   }
-    // }
+      setTimeout(() => {
+        handleClose();
+      }, 1000);
+    } catch (error) {
+      if (!res.ok) {
+        return toast.error(error.message, {
+          duration: 1000,
+        });
+      }
+    }
   };
 
   useEffect(() => {

@@ -6,8 +6,16 @@ import SEO from "@/components/SEO";
 import toast from "react-hot-toast";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { login, reset } from "@/features/Auth/authSlice";
 
 function Login() {
+  const dispatch = useDispatch();
+
+  const { userInfo, isLoading, isSuccess, isError, message } = useSelector(
+    (state) => state.auth
+  );
+
   const router = useRouter();
   const [formState, setFormState] = useState({
     email: "",
@@ -43,38 +51,39 @@ function Login() {
       password: password,
     };
 
-    try {
-      setLoading(true);
-      const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/auth/login", {
-        method: "POST",
-        body: JSON.stringify(formData),
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    dispatch(login(formData));
+    // try {
+    //   setLoading(true);
+    //   const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/auth/login", {
+    //     method: "POST",
+    //     body: JSON.stringify(formData),
+    //     credentials: "include",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   });
 
-      const data = await res.json();
+    //   const data = await res.json();
 
-      if (!res.ok) {
-        toast.error(data.message, {
-          duration: 1500,
-        });
-        return;
-      }
+    //   if (!res.ok) {
+    //     toast.error(data.message, {
+    //       duration: 1500,
+    //     });
+    //     return;
+    //   }
 
-      localStorage.setItem("User", JSON.stringify(data.user));
-      setTimeout(() => {
-        router.push("/");
-      }, 1000);
+    //   localStorage.setItem("User", JSON.stringify(data.user));
+    //   setTimeout(() => {
+    //     router.push("/");
+    //   }, 1000);
 
-      setLoading(false);
-      toast.success(data.message, {
-        duration: 1000,
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    //   setLoading(false);
+    //   toast.success(data.message, {
+    //     duration: 1000,
+    //   });
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   const inputValidation = () => {
@@ -90,20 +99,6 @@ function Login() {
       setErrorState((prev) => ({
         ...prev,
         emailError: "",
-      }));
-      isValid = true;
-    }
-
-    if (!password) {
-      setErrorState((prev) => ({
-        ...prev,
-        passwordError: "Cannot be empty",
-      }));
-      isValid = false;
-    } else {
-      setErrorState((prev) => ({
-        ...prev,
-        passwordError: "",
       }));
       isValid = true;
     }
@@ -126,6 +121,20 @@ function Login() {
       }
     }
 
+    if (!password) {
+      setErrorState((prev) => ({
+        ...prev,
+        passwordError: "Cannot be empty",
+      }));
+      isValid = false;
+    } else {
+      setErrorState((prev) => ({
+        ...prev,
+        passwordError: "",
+      }));
+      isValid = true;
+    }
+
     return isValid;
   };
 
@@ -133,6 +142,19 @@ function Login() {
     const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return pattern.test(emailText);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(message);
+      router.push("/");
+    }
+
+    if (isError) {
+      toast.error(message);
+    }
+
+    dispatch(reset());
+  }, [userInfo, isSuccess, isError, isLoading, message]);
 
   return (
     <>

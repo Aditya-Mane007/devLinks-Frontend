@@ -4,11 +4,23 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import { RxCross1 } from "react-icons/rx";
+import { useDispatch, useSelector } from "react-redux";
 
 function Profile() {
+  const dispatch = useDispatch();
+  const { userInfo, isSuccess, isError, isLoading, message } = useSelector(
+    (state) => state.auth
+  );
+
+  console.log(userInfo);
   const router = useRouter();
-  const [imageInput, setImageInput] = useState("");
-  const [imaagePreview, setImagePreview] = useState("");
+  const [imageInput, setImageInput] = useState(
+    userInfo ? userInfo.profileImage : ""
+  );
+  const [imagePreview, setImagePreview] = useState(
+    userInfo ? userInfo.profileImage : ""
+  );
 
   const imageInputHandler = (e) => {
     setImageInput(e.target.files[0]);
@@ -24,11 +36,26 @@ function Profile() {
     }
   };
 
-  const imageSubmitHandler = (e) => {
+  const imageSubmitHandler = async (e) => {
     const formData = new FormData();
-    formData.append("profileImage", e.target.files[0]);
+    formData.append("profileImage", imageInput);
 
-    console.log(formData);
+    formData.forEach((data) => console.log("Profile Image ", data));
+
+    try {
+      const res = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + "/auth/imageUpload",
+        {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const logoutHandler = async (e) => {
@@ -65,6 +92,7 @@ function Profile() {
       toast.error(error);
     }
   };
+
   return (
     <>
       <SEO
@@ -97,20 +125,44 @@ function Profile() {
               <div className="w-full flex items-center text-PrimaryGray md:px-[1rem] md:mb-0 mb-[1rem] text-">
                 Profile picture
               </div>
+
               {imageInput ? (
-                <Image
-                  src={imaagePreview}
-                  width={100}
-                  height={100}
-                  className="w-full md:w-[700px] h-[193px] rounded-[.5rem] object-cover sm:object-fill cursor-pointer "
-                />
+                <div className="flex flex-col relative">
+                  <Image
+                    src={imagePreview}
+                    width={1000}
+                    height={100}
+                    className="w-full md:w-[700px] h-[193px] rounded-[.5rem] object-cover sm:object-fill cursor-pointer "
+                  />
+
+                  <div
+                    className="absolute top-4 right-4"
+                    onClick={() => {
+                      setImageInput("");
+                      setImagePreview("");
+                    }}
+                  >
+                    <RxCross1 size={15} className="cursor-pointer font-bold" />
+                  </div>
+
+                  {userInfo.profileImage ? (
+                    ""
+                  ) : (
+                    <button
+                      className="bg-PrimaryPurple py-2 px-3 my-2 rounded-[.5rem] text-PrimaryWhite hover:bg-PrimaryPurple/80"
+                      onClick={imageSubmitHandler}
+                    >
+                      Upload
+                    </button>
+                  )}
+                </div>
               ) : (
                 <div className="md:w-[700px] h-[193px] bg-SecondaryPurple rounded-[.5rem] relative flex items-center justify-center cursor-pointer">
                   <form enctype="multipart/form-data">
                     <input
                       type="file"
                       accept="image/*"
-                      value={imaagePreview}
+                      // value={imagePreview}
                       onChange={imageInputHandler}
                       className="w-full h-full opacity-0 cursor-pointer absolute "
                     />

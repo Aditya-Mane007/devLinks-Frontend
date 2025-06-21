@@ -7,8 +7,17 @@ import SEO from "@/components/SEO";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
+import { register } from "@/features/Auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { reset } from "@/features/Auth/authSlice";
 
 function Register() {
+  const dispatch = useDispatch();
+
+  const { userInfo, isLoading, isSuccess, isError, message } = useSelector(
+    (state) => state.auth
+  );
+
   const router = useRouter();
   const [formState, setFormState] = useState({
     email: "",
@@ -46,40 +55,41 @@ function Register() {
       password: password,
     };
 
-    try {
-      const res = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + "/auth/register",
-        {
-          method: "POST",
-          body: JSON.stringify(formData),
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+    dispatch(register(formData));
+    // try {
+    //   const res = await fetch(
+    //     process.env.NEXT_PUBLIC_API_URL + "/auth/register",
+    //     {
+    //       method: "POST",
+    //       body: JSON.stringify(formData),
+    //       credentials: "include",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //     }
+    //   );
 
-      const data = await res.json();
+    //   const data = await res.json();
 
-      if (!res.ok) {
-        toast.error(data.message, {
-          duration: 1500,
-        });
-        return;
-      }
+    //   if (!res.ok) {
+    //     toast.error(data.message, {
+    //       duration: 1500,
+    //     });
+    //     return;
+    //   }
 
-      localStorage.setItem("User", JSON.stringify(data.user));
+    //   localStorage.setItem("User", JSON.stringify(data.user));
 
-      setTimeout(() => {
-        router.push("/");
-      }, 1000);
+    //   setTimeout(() => {
+    //     router.push("/");
+    //   }, 1000);
 
-      toast.success(data.message, {
-        duration: 1000,
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    //   toast.success(data.message, {
+    //     duration: 1000,
+    //   });
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   const inputValdation = () => {
@@ -141,7 +151,7 @@ function Register() {
     ) {
       setErrorState((prev) => ({
         ...prev,
-        confirmPasswordError: "Password does not match",
+        confirmPasswordError: "does not match",
       }));
       isValid = false;
     }
@@ -166,6 +176,21 @@ function Register() {
     const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return pattern.test(emailText);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(message);
+      router.push("/");
+    }
+
+    if (isError) {
+      toast.error(message);
+    }
+
+    dispatch(reset());
+    // return () => {
+    // };
+  }, [userInfo, isSuccess, isError, isLoading, message]);
 
   return (
     <>
