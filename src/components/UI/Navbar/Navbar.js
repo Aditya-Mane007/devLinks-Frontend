@@ -6,7 +6,7 @@ import { tabHandler } from "@/features/tab/tabSlice";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-function Navbar({ isPreview }) {
+function Navbar({ isPreview, copyToClipboard, isCopied }) {
   const dispatch = useDispatch();
   const { tab } = useSelector((state) => state.tab);
 
@@ -114,12 +114,12 @@ function Navbar({ isPreview }) {
           )}
 
           {isPreview && (
-            <Link
-              href="#"
+            <button
+              onClick={copyToClipboard}
               className="px-4 md:px-4 py-2 border border-PrimaryPurple hover:border-SecondaryPurple text-PrimaryWhite rounded-[.5rem] font-semibold -tracking-tighter flex items-center mr-1 bg-PrimaryPurple hover:bg-PrimaryPurple/80"
             >
-              Share Link
-            </Link>
+              {isCopied ? "Copied!" : "Share Link"}
+            </button>
           )}
         </div>
       </div>

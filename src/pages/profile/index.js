@@ -1,8 +1,11 @@
 import SEO from "@/components/SEO";
 import Navbar from "@/components/UI/Navbar/Navbar";
+import { fetchUser } from "@/features/Auth/authService";
+import { logout, updateUser } from "@/features/Auth/authSlice";
+import { reset } from "@/features/Links/linkSlice";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { RxCross1 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,14 +16,21 @@ function Profile() {
     (state) => state.auth
   );
 
-  console.log(userInfo);
   const router = useRouter();
-  const [imageInput, setImageInput] = useState(
-    userInfo ? userInfo.profileImage : ""
-  );
-  const [imagePreview, setImagePreview] = useState(
-    userInfo ? userInfo.profileImage : ""
-  );
+  const [imageInput, setImageInput] = useState("");
+  const [imagePreview, setImagePreview] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [updateUserInfo, setUpdateUserInfo] = useState({
+    firstName: userInfo?.firstName ? userInfo?.firstName : "",
+    lastName: userInfo?.lastName ? userInfo?.lastName : "",
+  });
+
+  const updateHandler = (e) => {
+    setUpdateUserInfo((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   const imageInputHandler = (e) => {
     setImageInput(e.target.files[0]);
@@ -53,45 +63,71 @@ function Profile() {
       );
 
       const data = await res.json();
+
+      dispatch(fetchUser());
+
+      if (res.ok) {
+        setUploading(false);
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const logoutHandler = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + "/auth/logout",
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
+  // const logoutHandler = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const res = await fetch(
+  //       process.env.NEXT_PUBLIC_API_URL + "/auth/logout",
+  //       {
+  //         method: "POST",
+  //         credentials: "include",
+  //       }
+  //     );
 
-      if (!res.ok) {
-        toast.error(data.message, {
-          duration: 1500,
-        });
-        return;
-      }
+  //     if (!res.ok) {
+  //       toast.error(data.message, {
+  //         duration: 1500,
+  //       });
+  //       return;
+  //     }
 
-      localStorage.removeItem("User");
+  //     localStorage.removeItem("User");
 
-      const data = await res.json();
+  //     const data = await res.json();
 
-      if (res.ok) {
-        toast.success(data.message, {
-          duration: 1000,
-        });
-        setTimeout(() => {
-          router.push("/login");
-        }, 1000);
-      }
-    } catch (error) {
-      toast.error(error);
+  //     if (res.ok) {
+  //       toast.success(data.message, {
+  //         duration: 1000,
+  //       });
+  //       setTimeout(() => {
+  //         router.push("/login");
+  //       }, 1000);
+  //     }
+  //   } catch (error) {
+  //     toast.error(error);
+  //   }
+  // };
+
+  useEffect(() => {
+    if (userInfo && userInfo?.profileImage) {
+      setImageInput(userInfo.profileImage);
+      setImagePreview(userInfo.profileImage);
     }
-  };
+  }, [userInfo]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(message);
+      // dispatch(fetchUser());
+    }
+
+    if (isError) {
+      toast.error(message);
+    }
+
+    dispatch(reset());
+  }, [userInfo, isSuccess, isError, isLoading, message]);
 
   return (
     <>
@@ -140,12 +176,13 @@ function Profile() {
                     onClick={() => {
                       setImageInput("");
                       setImagePreview("");
+                      setUploading(true);
                     }}
                   >
                     <RxCross1 size={15} className="cursor-pointer font-bold" />
                   </div>
 
-                  {userInfo.profileImage ? (
+                  {userInfo && userInfo.profileImage ? (
                     ""
                   ) : (
                     <button
@@ -154,6 +191,17 @@ function Profile() {
                     >
                       Upload
                     </button>
+                  )}
+
+                  {uploading ? (
+                    <button
+                      className="bg-PrimaryPurple py-2 px-3 my-2 rounded-[.5rem] text-PrimaryWhite hover:bg-PrimaryPurple/80"
+                      onClick={imageSubmitHandler}
+                    >
+                      Upload
+                    </button>
+                  ) : (
+                    ""
                   )}
                 </div>
               ) : (
@@ -186,7 +234,19 @@ function Profile() {
               </p>
             </div>
             <div className="bg-[#fafafa] rounded-[.5rem]  md:flex justify-between p-[1.5rem]">
-              <form className="w-full">
+              <form
+                className="w-full"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  const result = await dispatch(updateUser(updateUserInfo));
+
+                  if (updateUser.fulfilled.match(result)) {
+                    toast.success("Profile updated successfully");
+                  } else {
+                    toast.error(result.payload || "Failed to update profile");
+                  }
+                }}
+              >
                 <div className="lg:flex my-3">
                   <div className="w-full text-PrimaryGray leading-normal lg:leading-10 lg:mb-0 mb-2">
                     First Name*
@@ -195,6 +255,9 @@ function Profile() {
                     <input
                       type="text"
                       placeholder="e.g. Harry"
+                      name="firstName"
+                      value={updateUserInfo.firstName}
+                      onChange={updateHandler}
                       className="w-full px-[1rem] py-[.7rem] rounded-[.5rem] border border-PrimaryGray outline-0 focus:outline-PrimaryPurple focus:border-PrimaryPurple"
                     />
                   </div>
@@ -207,6 +270,9 @@ function Profile() {
                     <input
                       type="text"
                       placeholder="e.g. Potter"
+                      name="lastName"
+                      value={updateUserInfo.lastName}
+                      onChange={updateHandler}
                       className="w-full px-[1rem] py-[.7rem] rounded-[.5rem] border border-PrimaryGray outline-0 focus:outline-PrimaryPurple focus:border-PrimaryPurple"
                     />
                   </div>
@@ -218,15 +284,27 @@ function Profile() {
                   <div className="w-full">
                     <input
                       type="text"
+                      disabled
                       placeholder="e.g. harry@hogwarts.com"
                       className="w-full px-[1rem] py-[.7rem] rounded-[.5rem] border border-PrimaryGray outline-0 focus:outline-PrimaryPurple focus:border-PrimaryPurple"
+                      value={userInfo?.email}
                     />
                   </div>
                 </div>
                 <div className="flex justify-between mt-6">
                   <button
                     className="bg-PrimaryPurple hover:bg-PrimaryPurple/80 px-4 py-2 rounded-[.5rem] text-PrimaryWhite -tracking-tighter font-bold"
-                    onClick={logoutHandler}
+                    // onClick={logoutHandler}
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      const result = await dispatch(logout());
+
+                      if (logout.fulfilled.match(result)) {
+                        router.push("/login");
+                      } else {
+                        toast.error(result.payload || "Logout failed");
+                      }
+                    }}
                   >
                     Logout
                   </button>

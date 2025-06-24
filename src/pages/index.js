@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SEO from "@/components/SEO";
-import Links from "@/components/UI/Links/Links";
 import Navbar from "@/components/UI/Navbar/Navbar";
-import ProfileDetail from "@/components/UI/ProfileDetail/ProfileDetail";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "@/components/UI/Modal/Modal";
@@ -15,8 +13,6 @@ import {
 import toast from "react-hot-toast";
 import { MdDeleteOutline } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";
-import { DummyData } from "@/components/utils";
-import Select from "@/components/UI/Select/Select";
 import EditModal from "@/components/UI/Modal/EditModal";
 
 function Home({ initialLinks, messageText, success }) {
@@ -49,19 +45,6 @@ function Home({ initialLinks, messageText, success }) {
         duration: 1000,
       });
     }
-
-    // if (initialLinks && initialLinks.length > 0) {
-    //   setLinks(initialLinks);
-    //   dispatch(setInitialLinks(initialLinks));
-    //   toast.success(messageText, {
-    //     duration: 1000,
-    //   });
-    // } else {
-    //   dispatch(setInitialLinks([]));
-    //   toast.error(messageText, {
-    //     duration: 1000,
-    //   });
-    // }
   }, []);
 
   useEffect(() => {

@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { LuSlash } from "react-icons/lu";
 
 function Username({ userInfo, status, messageText }) {
   const [links, setLinks] = useState(userInfo?.links || []);
@@ -36,7 +35,14 @@ function Username({ userInfo, status, messageText }) {
       <main className="flex-1 h-full container mx-auto absolute top-[20%] left-0 right-0 ">
         <div className="w-full h-fit flex justify-center items-start">
           <div className="w-[90%] md:w-[50%] lg:w-[35%] bg-PrimaryWhite p-[1.5rem] rounded-[1rem]">
-            <div className="w-[7rem] h-[7rem] bg-PrimaryGray rounded-full mx-auto"></div>
+            <div className="w-[7rem] h-[7rem] bg-PrimaryGray rounded-full mx-auto">
+              <Image
+                src={userInfo.userInfo.profileImage}
+                width={100}
+                height={100}
+                className="w-full h-full rounded-full"
+              />
+            </div>
             <h1 className="mt-4 mb-1 text-3xl text-center font-bold">
               {userInfo.userInfo.fullName ? (
                 userInfo?.userInfo.fullName

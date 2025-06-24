@@ -36,6 +36,36 @@ export const register = createAsyncThunk(
   }
 );
 
+export const logout = createAsyncThunk("auth/logout", async (thunkAPI) => {
+  try {
+    return await authService.logoutUser();
+  } catch (error) {
+    const message = error.message;
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
+export const updateUser = createAsyncThunk(
+  "auth/update",
+  async (formData, thunkAPI) => {
+    try {
+      return await authService.updateUser(formData);
+    } catch (error) {
+      const message = error.message;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getUser = createAsyncThunk("auth/getUser", async (thunkAPI) => {
+  try {
+    return await authService.fetchUser();
+  } catch (error) {
+    const message = error.message;
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
 export const AuthSlice = createSlice({
   name: "Auth",
   initialState,
@@ -84,6 +114,60 @@ export const AuthSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.payload;
+      })
+      .addCase(logout.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.isSuccess = false;
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.userInfo = null;
+        state.message = action.payload.message;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload;
+      })
+      .addCase(getUser.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.isSuccess = false;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.userInfo = action.payload.user;
+        state.message = action.payload.message;
+      })
+      .addCase(getUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.message;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.isSuccess = false;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.userInfo = action.payload.user;
+        state.message = action.payload.message;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.message;
       });
   },
 });
